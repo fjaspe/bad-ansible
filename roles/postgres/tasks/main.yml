@@ -1,0 +1,27 @@
+---
+# tasks file for postgres
+#
+- name: deploy postgres
+#  hosts: apps
+  gather_facts: false
+  become: true
+  hosts: appdbs
+  tasks:
+  - name: install progress
+    yum:
+      name: postgresql-server
+      state: latest
+
+#  - name: enable postgresql at boot
+#    service:
+#      name: postgresql
+#      enabled: yes
+#  - name: tell user to finish setting up postgres
+#    debug:
+#      msg: "Either uncomment the postgres setup or manually login and initialize"
+# falta initialize postgresql
+  - name: start and enable postgres
+    service:
+      name: postgresql.service
+      state: started
+      enabled: yes

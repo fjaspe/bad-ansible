@@ -1,0 +1,16 @@
+---
+# tasks file for apache
+#
+- name: deploy apache
+  hosts: apps
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Install Apache on "apps" groups
+    yum:
+      name: httpd
+      state: latest
+  - name: enable apache at boot
+    service:
+      name: httpd
+      enabled: yes

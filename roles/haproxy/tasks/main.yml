@@ -1,0 +1,33 @@
+---
+# tasks file for haproxy
+#
+- name: Deploy haproxy on "frontends" group
+  hosts: frontends
+  gather_facts: false # remove later! speeds up testing
+  become: true
+
+  tasks:
+  - name: Install httpie python module
+    yum:
+      name: python2-httpie
+      name: haproxy
+      state: latest
+
+  - name: Configure HAproxy
+    template:
+      src: templates/haproxy.cfg.j2
+      dest: /etc/haproxy/haproxy.cfg
+      notify: restart haproxy
+  - name: enable haproxy
+    service:
+      name: haproxy
+      state: started
+      enabled: true
+
+handlers:
+
+  - name: restart haproxy
+    service:
+      name: haproxy
+      state: restarted
+
